@@ -1,11 +1,13 @@
+from flask import url_for, redirect, render_template
+
 from nlr_webapp import app
 from nlr_webapp.forms import QueryForm
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    form_result = QueryForm()
+    form = QueryForm()
 
     if form.validate_on_submit():
         print("good")
 
-    return "Natural Language Recommendations"
+    return render_template('home.html', form=form)
