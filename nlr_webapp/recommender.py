@@ -6,17 +6,17 @@ from transformers import BertTokenizer
 import pandas as pd
 #from pprint import pprint
 
-citations_embeddings = np.load('CitationSimilarityVectors106Epochs.npy')
-abstract_embeddings = np.load('AbstractSimVectors.npy')
+citations_embeddings = np.load('nlr_webapp/model_files/CitationSimilarityVectors106Epochs.npy')
+abstract_embeddings = np.load('nlr_webapp/model_files/AbstractSimVectors.npy')
 assert citations_embeddings.shape == abstract_embeddings.shape
 
 normalizedC = tf.nn.l2_normalize(citations_embeddings, axis=1)
 normalizedA = tf.nn.l2_normalize(abstract_embeddings, axis=1)
 
-model = tf.saved_model.load('tfworld/inference_model/')
-tokenizer = BertTokenizer(vocab_file='scibert_scivocab_uncased/vocab.txt')
+model = tf.saved_model.load('nlr_webapp/model_files/tfworld/inference_model/')
+tokenizer = BertTokenizer(vocab_file='nlr_webapp/model_files/scibert_scivocab_uncased/vocab.txt')
 
-df = pd.read_json('TitlesIdsAbstractsEmbedIdsCOMPLETE_12-30-19.json.gzip', compression = 'gzip')
+df = pd.read_json('nlr_webapp/model_files/TitlesIdsAbstractsEmbedIdsCOMPLETE_12-30-19.json.gzip', compression = 'gzip')
 embed2Title = pd.Series(df['title'].values,index=df['EmbeddingID']).to_dict()
 embed2Abstract = pd.Series(df['paperAbstract'].values,index=df['EmbeddingID']).to_dict()
 embed2Paper = pd.Series(df['id'].values,index=df['EmbeddingID']).to_dict()
